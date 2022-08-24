@@ -15,6 +15,8 @@
     "react-relay": "^14.1.0",
     "react-scripts": "5.0.1",
     "relay-runtime": "^14.1.0",
+    "styled-components": "^5.3.5",
+    "styled-reset": "^4.4.2",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
@@ -50,6 +52,7 @@
   },
   "devDependencies": {
     "@types/react-relay": "^14.1.1",
+    "@types/styled-components": "^5.1.26",
     "babel-plugin-relay": "^14.1.0",
     "graphql": "^16.6.0",
     "relay-compiler": "^14.1.0"
