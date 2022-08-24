@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { graphql } from "babel-plugin-relay/macro";
+import { RelayEnvironmentProvider, loadQuery, usePreloadedQuery, PreloadedQuery } from "react-relay/hooks";
+import RelayEnvironment from "./RelayEnvironment";
+import { OperationType } from "relay-runtime";
 
-function App() {
+const { Suspense } = React;
+
+const RepositoryNameQuery = graphql`
+  query AppRepositoryNameQuery {
+    search(query: "greenlabs in:name greenlabs in:description", type: REPOSITORY, first: 10) {
+      repositoryCount
+      nodes {
+        ... on Repository {
+          nameWithOwner
+          description
+          stargazerCount
+          stargazers(first: 10) {
+            totalCount
+          }
+          updatedAt
+          createdAt
+          diskUsage
+        }
+      }
+    }
+  }
+`;
+
+const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {});
+
+const App = (props: { preloadedQuery: PreloadedQuery<OperationType, Record<string, unknown>> }) => {
+  const data: any = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header>
+        <p>{data.search.nodes[0].description}</p>
       </header>
     </div>
   );
-}
+};
 
-export default App;
+const AppRoot = (props: any) => {
+  return (
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <Suspense fallback={"Loading..."}>
+        <App preloadedQuery={preloadedQuery} />
+      </Suspense>
+    </RelayEnvironmentProvider>
+  );
+};
+
+export default AppRoot;
