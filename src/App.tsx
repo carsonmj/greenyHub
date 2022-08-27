@@ -1,54 +1,77 @@
-import React from "react";
-import { graphql } from "babel-plugin-relay/macro";
-import { RelayEnvironmentProvider, loadQuery, usePreloadedQuery, PreloadedQuery } from "react-relay/hooks";
-import RelayEnvironment from "./RelayEnvironment";
-import { OperationType } from "relay-runtime";
+import type { PreloadedQuery } from "react-relay";
+import type { pageGitHubRepoQuery as pageGitHubRepoQueryType } from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
 
-const { Suspense } = React;
+import { useState, Suspense, useEffect } from "react";
+import { useQueryLoader } from "react-relay/hooks";
 
-const RepositoryNameQuery = graphql`
-  query AppRepositoryNameQuery {
-    search(query: "greenlabs in:name greenlabs in:description", type: REPOSITORY, first: 10) {
-      repositoryCount
-      nodes {
-        ... on Repository {
-          nameWithOwner
-          description
-          stargazerCount
-          stargazers(first: 10) {
-            totalCount
-          }
-          updatedAt
-          createdAt
-          diskUsage
-        }
-      }
+import SerachPage from "./features/search/page";
+import Error from "./common/components/Error";
+import ErrorBoundaryWithRetry from "./common/components/ErrorBoundaryWithRetry";
+import pageGitHubRepoQuery from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
+
+interface Props {
+  initialQueryRef: PreloadedQuery<pageGitHubRepoQueryType>;
+}
+
+const generateKeywordQueryParameter = (keyword: string) => {
+  return `${keyword} in:name ${keyword} in:description`;
+};
+
+const App = (props: Props) => {
+  const [keyword, setKeyword] = useState("그린랩스");
+  const [queryReference, loadQuery] = useQueryLoader<pageGitHubRepoQueryType>(
+    pageGitHubRepoQuery,
+    props.initialQueryRef
+  );
+
+  const handleKeywordChange = (newKeyword: string) => {
+    loadQuery({
+      keyword: generateKeywordQueryParameter(newKeyword),
+    });
+    setKeyword(newKeyword);
+  };
+
+  const handleNavigationClick = (cursor: string, direction: string) => {
+    if (direction === "prev") {
+      loadQuery({
+        keyword,
+        startCursor: cursor,
+      });
+    } else if (direction === "next") {
+      loadQuery({
+        keyword,
+        endCursor: cursor,
+      });
     }
-  }
-`;
+  };
 
-const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {});
-
-const App = (props: { preloadedQuery: PreloadedQuery<OperationType, Record<string, unknown>> }) => {
-  const data: any = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
+  useEffect(() => {
+    loadQuery({
+      keyword: generateKeywordQueryParameter(keyword),
+    });
+  }, []);
 
   return (
-    <div>
-      <header>
-        <p>{data.search.nodes[0].description}</p>
-      </header>
-    </div>
-  );
-};
-
-const AppRoot = (props: any) => {
-  return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={"Loading..."}>
-        <App preloadedQuery={preloadedQuery} />
+    <ErrorBoundaryWithRetry
+      onRetry={() =>
+        loadQuery({
+          keyword: generateKeywordQueryParameter(keyword),
+        })
+      }
+      fallback={({ error, retry }: { error: any; retry: () => void }) => <Error retry={retry} />}
+    >
+      <Suspense fallback="Loading...">
+        {queryReference != null ? (
+          <SerachPage
+            queryReference={queryReference}
+            keyword={keyword}
+            handleKeywordChange={handleKeywordChange}
+            handleNavigationClick={handleNavigationClick}
+          />
+        ) : null}
       </Suspense>
-    </RelayEnvironmentProvider>
+    </ErrorBoundaryWithRetry>
   );
 };
 
-export default AppRoot;
+export default App;
