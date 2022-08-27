@@ -1,4 +1,7 @@
-import { useFragment } from "react-relay";
+import type { RepoCardStarMutation } from "./__generated__/RepoCardStarMutation.graphql";
+import type { RepoCardUnstarMutation } from "./__generated__/RepoCardUnstarMutation.graphql";
+
+import { useFragment, useMutation } from "react-relay";
 import { graphql } from "babel-plugin-relay/macro";
 import styled from "styled-components";
 
@@ -6,22 +9,74 @@ import StarButton from "./StarButton";
 
 const ListCard = (props: any) => {
   const query = graphql`
-    fragment RepoCard_repo on SearchResultItem {
-      ... on Repository {
-        name
-        nameWithOwner
-        description
-        stargazerCount
-      }
+    fragment RepoCard_repository on Repository {
+      name
+      description
     }
   `;
-  const singleRepo = useFragment(query, props.repo);
+
+  const queryForStar = graphql`
+    fragment RepoCardStar_repository on Repository {
+      id
+      viewerHasStarred
+      stargazerCount
+    }
+  `;
+  const repoData = useFragment(query, props.repo);
+  const starData = useFragment(queryForStar, props.repo);
+
+  const [starCommitMutation, isStarMutationInFlight] = useMutation<RepoCardStarMutation>(
+    graphql`
+      mutation RepoCardStarMutation($input: AddStarInput!) {
+        addStar(input: $input) {
+          starrable {
+            ...RepoCardStar_repository
+          }
+        }
+      }
+    `
+  );
+
+  const [unstarCommitMutation, isUnstarMutationInFlight] = useMutation<RepoCardUnstarMutation>(
+    graphql`
+      mutation RepoCardUnstarMutation($input: RemoveStarInput!) {
+        removeStar(input: $input) {
+          starrable {
+            ...RepoCardStar_repository
+          }
+        }
+      }
+    `
+  );
+
+  const handleStarButtonClick = (viewerHasStarred: boolean, id: string) => {
+    if (viewerHasStarred) {
+      unstarCommitMutation({
+        variables: {
+          input: { starrableId: id },
+        },
+      });
+    } else {
+      starCommitMutation({
+        variables: {
+          input: { starrableId: id },
+        },
+      });
+    }
+  };
 
   return (
     <Container>
-      <Title>{singleRepo.nameWithOwner}</Title>
-      <Description>{singleRepo.description}</Description>
-      <StarButton starCount={singleRepo.stargazerCount} isActive={true} onClick={() => {}} />
+      <Title>{repoData.name}</Title>
+      <Description>{repoData.description}</Description>
+      <StarButton
+        starCount={starData.stargazerCount}
+        isActive={starData.viewerHasStarred}
+        onClick={() => {
+          handleStarButtonClick(starData.viewerHasStarred, starData.id);
+        }}
+        disabled={isStarMutationInFlight || isUnstarMutationInFlight}
+      />
     </Container>
   );
 };
