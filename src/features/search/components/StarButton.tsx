@@ -4,15 +4,16 @@ interface StarButtonProps {
   starCount: string;
   isActive: boolean;
   onClick: () => void;
+  disabled: boolean;
 }
 
 interface StyledButtonProps {
   isActive: boolean;
 }
 
-const StarButton = ({ starCount, isActive, onClick }: StarButtonProps) => {
+const StarButton = ({ starCount, isActive, onClick, disabled }: StarButtonProps) => {
   return (
-    <Container isActive={isActive} onClick={onClick}>
+    <Container isActive={isActive} onClick={onClick} disabled={disabled}>
       ⭐️ {starCount}
     </Container>
   );
@@ -28,5 +29,6 @@ const Container = styled.button<StyledButtonProps>`
   border-radius: 2rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.gray_2};
-  background: ${({ theme, isActive }) => (isActive ? theme.colors.purple_1 : theme.colors.lightgray_2)};
+  background: ${({ theme, isActive }) => (isActive ? theme.colors.yellow_1 : theme.colors.lightgray_2)};
+  cursor: pointer;
 `;
