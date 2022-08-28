@@ -56,13 +56,14 @@ const RepositoryCard = (props: any) => {
           input: { starrableId: id },
         },
       });
-    } else {
-      starCommitMutation({
-        variables: {
-          input: { starrableId: id },
-        },
-      });
+      return;
     }
+
+    starCommitMutation({
+      variables: {
+        input: { starrableId: id },
+      },
+    });
   };
 
   return (
