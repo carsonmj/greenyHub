@@ -15,8 +15,8 @@ interface Props {
 class ErrorBoundaryWithRetry extends React.Component<Props, State> {
   state = { error: null };
 
-  static getDerivedStateFromError(error: any): State {
-    return { error: error };
+  static getDerivedStateFromError(error: Error | null): State {
+    return { error };
   }
 
   _retry = () => {
