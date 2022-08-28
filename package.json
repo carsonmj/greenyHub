@@ -19,16 +19,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "relay": "relay-compiler",
     "start": "npm run relay && react-scripts start",
     "build": "npm run relay && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "relay": {
-    "src": "./src/",
-    "schema": "./schema.graphql",
-    "language": "typescript"
+    "eject": "react-scripts eject",
+    "relay": "relay-compiler ./relay.config.js"
   },
   "eslintConfig": {
     "extends": [
