@@ -31,4 +31,9 @@ const Container = styled.button<StyledButtonProps>`
   color: ${({ theme }) => theme.colors.gray_2};
   background: ${({ theme, isActive }) => (isActive ? theme.colors.yellow_1 : theme.colors.lightgray_2)};
   cursor: pointer;
+  transition: transform 0.1s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
