@@ -1,8 +1,6 @@
 import { Environment, Network, RecordSource, Store, RequestParameters, Variables, CacheConfig } from "relay-runtime";
 
 async function fetchRelay(params: RequestParameters, variables: Variables, _cacheConfig: CacheConfig) {
-  console.log(`fetching query ${params.name} with ${JSON.stringify(variables)}`);
-
   const REACT_APP_GITHUB_AUTH_TOKEN = process.env.REACT_APP_GITHUB_AUTH_TOKEN;
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
