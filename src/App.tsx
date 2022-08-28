@@ -1,76 +1,72 @@
 import type { PreloadedQuery } from "react-relay";
-import type { pageGitHubRepoQuery as pageGitHubRepoQueryType } from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
+import type { RepositoryListQuery as RepositoryListQueryType } from "./features/search/components/__generated__/RepositoryListQuery.graphql";
 
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense, useRef } from "react";
 import { useQueryLoader } from "react-relay/hooks";
 
-import SerachPage from "./features/search/page";
+import SearchRepositoryLayout from "./features/search/layout/SearchRepositoryLayout";
+import RepositoryList from "./features/search/components/RepositoryList";
+import Button from "./common/components/Button";
 import Error from "./common/components/Error";
 import ErrorBoundaryWithRetry from "./common/components/ErrorBoundaryWithRetry";
-import pageGitHubRepoQuery from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
+import Header from "./common/components/Header";
+import Input from "./common/components/Input";
+import Spinner from "./common/components/Spinner";
+import { generateKeywordQueryParameter } from "./common/utils/helper";
+import RespositoryListQuery from "./features/search/components/__generated__/RepositoryListQuery.graphql";
 
 interface Props {
-  initialQueryRef: PreloadedQuery<pageGitHubRepoQueryType>;
+  initialQueryRef: PreloadedQuery<RepositoryListQueryType>;
 }
 
-const generateKeywordQueryParameter = (keyword: string) => {
-  return `${keyword} in:name ${keyword} in:description`;
-};
+interface QueryVariables {
+  keyword: string;
+  listCount: number;
+  cursor?: string;
+}
 
 const App = (props: Props) => {
+  const listCount = 10;
   const [keyword, setKeyword] = useState("그린랩스");
-  const [queryReference, loadQuery] = useQueryLoader<pageGitHubRepoQueryType>(
-    pageGitHubRepoQuery,
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const [queryReference, loadQuery] = useQueryLoader<RepositoryListQueryType>(
+    RespositoryListQuery,
     props.initialQueryRef
   );
 
-  const handleKeywordChange = (newKeyword: string) => {
-    loadQuery({
-      keyword: generateKeywordQueryParameter(newKeyword),
-    });
-    setKeyword(newKeyword);
+  const loadSearchQuery = (variables: QueryVariables) => {
+    loadQuery(variables);
   };
 
-  const handleNavigationClick = (cursor: string, direction: string) => {
-    if (direction === "prev") {
-      loadQuery({
-        keyword,
-        startCursor: cursor,
-      });
-    } else if (direction === "next") {
-      loadQuery({
-        keyword,
-        endCursor: cursor,
-      });
+  const handleKeywordChange = () => {
+    const value = searchInputRef?.current?.value;
+
+    if (value) {
+      loadSearchQuery({ keyword: generateKeywordQueryParameter(value), listCount });
+      setKeyword(value);
     }
   };
 
-  useEffect(() => {
-    loadQuery({
-      keyword: generateKeywordQueryParameter(keyword),
-    });
-  }, []);
-
   return (
-    <ErrorBoundaryWithRetry
-      onRetry={() =>
-        loadQuery({
-          keyword: generateKeywordQueryParameter(keyword),
-        })
+    <SearchRepositoryLayout
+      header={<Header />}
+      searchInput={
+        <>
+          <Input refs={searchInputRef} placeholder="Please enter the keyword" />
+          <Button onClick={handleKeywordChange} text="검색" />
+        </>
       }
-      fallback={({ error, retry }: { error: any; retry: () => void }) => <Error retry={retry} />}
-    >
-      <Suspense fallback="Loading...">
-        {queryReference != null ? (
-          <SerachPage
-            queryReference={queryReference}
-            keyword={keyword}
-            handleKeywordChange={handleKeywordChange}
-            handleNavigationClick={handleNavigationClick}
-          />
-        ) : null}
-      </Suspense>
-    </ErrorBoundaryWithRetry>
+      body={
+        <ErrorBoundaryWithRetry
+          onRetry={() => loadSearchQuery({ keyword: generateKeywordQueryParameter(keyword), listCount })}
+          fallback={({ error, retry }) => <Error retry={retry} />}
+        >
+          <Suspense fallback={<Spinner />}>
+            {queryReference != null ? <RepositoryList queryReference={queryReference} /> : null}
+          </Suspense>
+        </ErrorBoundaryWithRetry>
+      }
+    />
   );
 };
 
