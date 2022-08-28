@@ -1,3 +1,3 @@
 export const generateKeywordQueryParameter = (keyword: string) => {
-  return `${keyword} in:name ${keyword} in:description`;
+  return `${keyword} in:name ${keyword} in:description sort:stars`;
 };
