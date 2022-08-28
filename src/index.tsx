@@ -1,4 +1,4 @@
-import type { pageGitHubRepoQuery as pageGitHubRepoQueryType } from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
+import type { RepositoryListQuery as RepositoryListQueryType } from "../src/features/search/components/__generated__/RepositoryListQuery.graphql";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -6,15 +6,17 @@ import { RelayEnvironmentProvider, loadQuery } from "react-relay/hooks";
 import { ThemeProvider } from "styled-components";
 
 import App from "./App";
+import { generateKeywordQueryParameter } from "./common/utils/helper";
 import RelayEnvironment from "./RelayEnvironment";
+import pageGitHubRepoQuery from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
 import GlobalStyle from "./styles/GlobalStyle";
 import theme from "./styles/theme";
 import reportWebVitals from "./reportWebVitals";
-import pageGitHubRepoQuery from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-const initialQueryRef = loadQuery<pageGitHubRepoQueryType>(RelayEnvironment, pageGitHubRepoQuery, {
-  keyword: "그린랩스",
+const initialQueryRef = loadQuery<RepositoryListQueryType>(RelayEnvironment, pageGitHubRepoQuery, {
+  keyword: generateKeywordQueryParameter("그린랩스"),
+  listCount: 10,
 });
 
 root.render(
