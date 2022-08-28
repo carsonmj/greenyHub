@@ -6,7 +6,7 @@ const Error = (props: any) => {
   return (
     <Container>
       <Description>An error has occurred</Description>
-      <Button text="retry" background="#F99898" onClick={props.retry} />
+      <WarnningButton text="retry" onClick={props.retry} />
     </Container>
   );
 };
@@ -18,10 +18,16 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 80vh;
 `;
 
 const Description = styled.h1`
   margin-bottom: 1rem;
-  font-size: ${({ theme }) => theme.fontSizes.xl3};
+  font-size: ${({ theme }) => theme.fontSizes.xl2};
+  color: ${({ theme }) => theme.colors.gray_2};
+`;
+
+const WarnningButton = styled(Button)`
+  border: ${({ theme }) => `0.2rem solid ${theme.colors.red_1}`};
+  background: ${({ theme, background }) => (background ? background : theme.colors.red_1)};
 `;
