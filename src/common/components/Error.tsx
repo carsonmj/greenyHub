@@ -2,7 +2,11 @@ import styled from "styled-components";
 
 import Button from "./Button";
 
-const Error = (props: any) => {
+interface Props {
+  retry: () => void;
+}
+
+const Error = (props: Props) => {
   return (
     <Container>
       <Description>An error has occurred</Description>
