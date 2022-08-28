@@ -8,13 +8,13 @@ import { ThemeProvider } from "styled-components";
 import App from "./App";
 import { generateKeywordQueryParameter } from "./common/utils/helper";
 import RelayEnvironment from "./RelayEnvironment";
-import pageGitHubRepoQuery from "../src/features/search/page/__generated__/pageGitHubRepoQuery.graphql";
+import RespositoryListQuery from "./features/search/components/__generated__/RepositoryListQuery.graphql";
 import GlobalStyle from "./styles/GlobalStyle";
 import theme from "./styles/theme";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-const initialQueryRef = loadQuery<RepositoryListQueryType>(RelayEnvironment, pageGitHubRepoQuery, {
+const initialQueryRef = loadQuery<RepositoryListQueryType>(RelayEnvironment, RespositoryListQuery, {
   keyword: generateKeywordQueryParameter("그린랩스"),
   listCount: 10,
 });
