@@ -33,11 +33,6 @@ const RepositoryList = (props: Props) => {
       fragment RepositoryList_query on Query @refetchable(queryName: "RepositoryListPaginationQuery") {
         search(query: $keyword, after: $cursor, type: REPOSITORY, first: $listCount)
           @connection(key: "RepositoryList_query_search") {
-          pageInfo {
-            startCursor
-            hasNextPage
-            endCursor
-          }
           edges {
             node {
               ... on Repository {
@@ -52,6 +47,23 @@ const RepositoryList = (props: Props) => {
     `,
     preLoadData
   );
+
+  const getFooter = () => {
+    if (hasNext && !isLoadingNext) {
+      return (
+        <Button
+          text="더보기"
+          onClick={() => {
+            loadNext(10);
+          }}
+        />
+      );
+    }
+
+    if (isLoadingNext) {
+      return <Loading>loding...</Loading>;
+    }
+  };
 
   return (
     <Container>
@@ -68,18 +80,9 @@ const RepositoryList = (props: Props) => {
 
             return null;
           })}
+        {data?.search?.edges?.length === 0 && <Text>검색 결과가 없습니다.</Text>}
       </ListWrapper>
-      {hasNext
-        ? !isLoadingNext && (
-            <Button
-              text="더보기"
-              onClick={() => {
-                loadNext(10);
-              }}
-            />
-          )
-        : null}
-      {isLoadingNext && <Loading>loding...</Loading>}
+      {getFooter()}
     </Container>
   );
 };
@@ -98,6 +101,12 @@ const ListWrapper = styled.article`
   align-items: center;
   width: 100vw;
   margin: 2rem 0;
+`;
+
+const Text = styled.p`
+  margin-top: 4rem;
+  color: ${({ theme, color }) => (color ? color : theme.colors.gray_3)};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
 `;
 
 const Loading = styled.p`
