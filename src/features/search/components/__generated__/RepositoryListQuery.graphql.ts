@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5648c19e7f8845d326720f353620ec44>>
+ * @generated SignedSource<<bbc6a6ab6ff59ae9d1f9e49d04eca97b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -109,38 +109,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "PageInfo",
-            "kind": "LinkedField",
-            "name": "pageInfo",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "startCursor",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "hasNextPage",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "endCursor",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "SearchResultItemEdge",
             "kind": "LinkedField",
             "name": "edges",
@@ -217,6 +185,31 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "kind": "LinkedField",
+            "name": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "endCursor",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hasNextPage",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -236,12 +229,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f27939ba7b51d0fd8e62c6b1dc17c8bc",
+    "cacheID": "028e6ae2743394b5a24329ecced8c0e8",
     "id": null,
     "metadata": {},
     "name": "RepositoryListQuery",
     "operationKind": "query",
-    "text": "query RepositoryListQuery(\n  $keyword: String!\n  $cursor: String\n  $listCount: Int!\n) {\n  ...RepositoryList_query\n}\n\nfragment RepositoryCardStar_repository on Repository {\n  id\n  viewerHasStarred\n  stargazerCount\n}\n\nfragment RepositoryCard_repository on Repository {\n  name\n  description\n}\n\nfragment RepositoryList_query on Query {\n  search(query: $keyword, after: $cursor, type: REPOSITORY, first: $listCount) {\n    pageInfo {\n      startCursor\n      hasNextPage\n      endCursor\n    }\n    edges {\n      node {\n        __typename\n        ... on Repository {\n          id\n          ...RepositoryCard_repository\n          ...RepositoryCardStar_repository\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n  }\n}\n"
+    "text": "query RepositoryListQuery(\n  $keyword: String!\n  $cursor: String\n  $listCount: Int!\n) {\n  ...RepositoryList_query\n}\n\nfragment RepositoryCardStar_repository on Repository {\n  id\n  viewerHasStarred\n  stargazerCount\n}\n\nfragment RepositoryCard_repository on Repository {\n  name\n  description\n}\n\nfragment RepositoryList_query on Query {\n  search(query: $keyword, after: $cursor, type: REPOSITORY, first: $listCount) {\n    edges {\n      node {\n        __typename\n        ... on Repository {\n          id\n          ...RepositoryCard_repository\n          ...RepositoryCardStar_repository\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

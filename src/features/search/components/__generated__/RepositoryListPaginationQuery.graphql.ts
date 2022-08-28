@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3795d95ec6e52a79346be859767b1d46>>
+ * @generated SignedSource<<314b774f1e23d3a6e1ddd94863347d3e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -103,38 +103,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "PageInfo",
-            "kind": "LinkedField",
-            "name": "pageInfo",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "startCursor",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "hasNextPage",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "endCursor",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "SearchResultItemEdge",
             "kind": "LinkedField",
             "name": "edges",
@@ -211,6 +179,31 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "kind": "LinkedField",
+            "name": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "endCursor",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hasNextPage",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -230,16 +223,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "92f0476da50375857e23cc4bb08c5a41",
+    "cacheID": "0a32e88f213275a66551394b826699c2",
     "id": null,
     "metadata": {},
     "name": "RepositoryListPaginationQuery",
     "operationKind": "query",
-    "text": "query RepositoryListPaginationQuery(\n  $cursor: String\n  $keyword: String!\n  $listCount: Int\n) {\n  ...RepositoryList_query\n}\n\nfragment RepositoryCardStar_repository on Repository {\n  id\n  viewerHasStarred\n  stargazerCount\n}\n\nfragment RepositoryCard_repository on Repository {\n  name\n  description\n}\n\nfragment RepositoryList_query on Query {\n  search(query: $keyword, after: $cursor, type: REPOSITORY, first: $listCount) {\n    pageInfo {\n      startCursor\n      hasNextPage\n      endCursor\n    }\n    edges {\n      node {\n        __typename\n        ... on Repository {\n          id\n          ...RepositoryCard_repository\n          ...RepositoryCardStar_repository\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n  }\n}\n"
+    "text": "query RepositoryListPaginationQuery(\n  $cursor: String\n  $keyword: String!\n  $listCount: Int\n) {\n  ...RepositoryList_query\n}\n\nfragment RepositoryCardStar_repository on Repository {\n  id\n  viewerHasStarred\n  stargazerCount\n}\n\nfragment RepositoryCard_repository on Repository {\n  name\n  description\n}\n\nfragment RepositoryList_query on Query {\n  search(query: $keyword, after: $cursor, type: REPOSITORY, first: $listCount) {\n    edges {\n      node {\n        __typename\n        ... on Repository {\n          id\n          ...RepositoryCard_repository\n          ...RepositoryCardStar_repository\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f487a39bcc27523d5134b3075887f4fd";
+(node as any).hash = "7922757889e57585e85074e769bbd4cc";
 
 export default node;
