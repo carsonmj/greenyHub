@@ -1,13 +1,15 @@
-import React from "react";
-
-interface Props {
-  onRetry: () => void;
-  children?: any;
-  fallback?: any;
-}
+import React, { ReactNode } from "react";
 
 interface State {
-  error?: any;
+  error: Error | null;
+}
+interface fallbackProps extends State {
+  retry: () => void;
+}
+interface Props {
+  onRetry: () => void;
+  children: ReactNode;
+  fallback?: ({ error, retry }: fallbackProps) => any;
 }
 
 class ErrorBoundaryWithRetry extends React.Component<Props, State> {
