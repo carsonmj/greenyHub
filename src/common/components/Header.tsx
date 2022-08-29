@@ -15,7 +15,7 @@ export default Header;
 
 const Container = styled.header`
   position: fixed;
-  width: 100vw;
+  width: 100%;
   height: 3rem;
   padding 0.8rem;
   background: ${({ theme }) => theme.colors.green_1};

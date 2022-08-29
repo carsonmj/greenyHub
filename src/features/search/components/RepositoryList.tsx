@@ -99,7 +99,7 @@ const ListWrapper = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   margin: 2rem 0;
 `;
 
