@@ -42,7 +42,7 @@ React App 실행 후 브라우저 접속 http://localhost:3000/
 
 ## Features
 
-<img width="480" alt="greenyHub_feature_gif" src="https://user-images.githubusercontent.com/54696956/187095496-d5812aa5-0635-48e2-88ae-d7a2eb029aa3.gif">
+<img width="520" alt="greenyHub_feature_gif" src="https://user-images.githubusercontent.com/54696956/187095496-d5812aa5-0635-48e2-88ae-d7a2eb029aa3.gif">
 
 - [GitHub GraphQL API](https://docs.github.com/en/graphql/guides/forming-calls-with-graphql)를 통한 GitHub Repository를 검색 웹입니다.
 
@@ -92,7 +92,7 @@ JavaScript 환경을 최대한 활용하여 CSS를 적용할 수 있습니다. p
 
 #### Thinking in React
 
-<img width="480" alt="UI_tree" src="https://user-images.githubusercontent.com/54696956/187102504-4b62f1b3-2ed9-46f8-baff-886d1cdecdcd.png"><br />
+<img width="560" alt="UI_tree" src="https://user-images.githubusercontent.com/54696956/187102504-4b62f1b3-2ed9-46f8-baff-886d1cdecdcd.png"><br />
 
 1. <u>Break The UI Into A Component Hierarchy </u>  
    Figma를 사용하여 Mockup UI를 생성하고, Mockup을 기준으로 컴포넌트 모델과 계층구조를 설계했습니다. 컴포넌트를 계층 구조로 나눠서 최대한 컴포넌트별 단인 책임을 가질 수 있도록 구성하려고 했습니다.
