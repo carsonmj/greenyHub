@@ -92,7 +92,7 @@ JavaScript 환경을 최대한 활용하여 CSS를 적용할 수 있습니다. p
 
 #### Thinking in React
 
-<img width="560" alt="UI_tree" src="https://user-images.githubusercontent.com/54696956/187102504-4b62f1b3-2ed9-46f8-baff-886d1cdecdcd.png"><br />
+<img width="600" alt="UI_tree" src="https://user-images.githubusercontent.com/54696956/187102504-4b62f1b3-2ed9-46f8-baff-886d1cdecdcd.png"><br />
 
 1. <u>Break The UI Into A Component Hierarchy </u>  
    Figma를 사용하여 Mockup UI를 생성하고, Mockup을 기준으로 컴포넌트 모델과 계층구조를 설계했습니다. 컴포넌트를 계층 구조로 나눠서 최대한 컴포넌트별 단인 책임을 가질 수 있도록 구성하려고 했습니다.
