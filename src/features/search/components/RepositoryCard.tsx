@@ -92,6 +92,9 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white_1};
   color: ${({ theme }) => theme.colors.gray_1};
   cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: pre-line;
+  overflow: hidden;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.lightgray_1};
