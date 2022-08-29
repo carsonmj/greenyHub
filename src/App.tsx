@@ -52,7 +52,7 @@ const App = (props: Props) => {
       header={<Header />}
       searchInput={
         <>
-          <Input refs={searchInputRef} placeholder="Please enter the keyword" />
+          <Input refs={searchInputRef} onKeyPress={handleKeywordChange} placeholder="Please enter the keyword" />
           <Button onClick={handleKeywordChange} text="검색" />
         </>
       }

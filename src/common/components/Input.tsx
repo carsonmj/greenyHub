@@ -5,11 +5,22 @@ interface InputProps {
   width?: number;
   height?: number;
   placeholder?: string;
+  onKeyPress?: () => void;
   refs: MutableRefObject<HTMLInputElement> | MutableRefObject<null>;
 }
 
 const Input = (props: InputProps) => {
-  return <Container ref={props.refs} placeholder={props.placeholder} />;
+  const handleKeyPress = (e: { key: string }) => {
+    if (!props.onKeyPress) {
+      return;
+    }
+
+    if (e.key === "Enter") {
+      props.onKeyPress();
+    }
+  };
+
+  return <Container ref={props.refs} onKeyPress={handleKeyPress} placeholder={props.placeholder} />;
 };
 
 export default Input;
