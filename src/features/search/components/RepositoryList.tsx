@@ -9,8 +9,8 @@ import { graphql } from "babel-plugin-relay/macro";
 import styled from "styled-components";
 
 import RepositoryCard from "./RepositoryCard";
+import Footer from "./Footer";
 import Spinner from "../../../common/components/Spinner";
-import Button from "../../../common/components/Button";
 
 interface Props {
   queryReference: PreloadedQuery<RepositoryListQuery>;
@@ -48,23 +48,6 @@ const RepositoryList = (props: Props) => {
     preLoadData
   );
 
-  const getFooter = () => {
-    if (hasNext && !isLoadingNext) {
-      return (
-        <Button
-          text="더보기"
-          onClick={() => {
-            loadNext(10);
-          }}
-        />
-      );
-    }
-
-    if (isLoadingNext) {
-      return <Loading>loding...</Loading>;
-    }
-  };
-
   return (
     <Container>
       <ListWrapper>
@@ -82,7 +65,7 @@ const RepositoryList = (props: Props) => {
           })}
         {data?.search?.edges?.length === 0 && <Text>검색 결과가 없습니다.</Text>}
       </ListWrapper>
-      {getFooter()}
+      <Footer hasNext={hasNext} isLoadingNext={isLoadingNext} onClick={() => loadNext(10)} />
     </Container>
   );
 };
@@ -107,9 +90,4 @@ const Text = styled.p`
   margin-top: 4rem;
   color: ${({ theme, color }) => (color ? color : theme.colors.gray_3)};
   font-size: ${({ theme }) => theme.fontSizes.xl};
-`;
-
-const Loading = styled.p`
-  color: ${({ theme, color }) => (color ? color : theme.colors.gray_3)};
-  font-size: ${({ theme }) => theme.fontSizes.lg};
 `;
